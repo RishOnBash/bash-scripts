@@ -11,52 +11,52 @@ A collection of minimalist CLI utilities for Termux.
 ## 🚀 Installation
 Clone the repository and run the setup script to deploy the tools to your 'bin' directory.
 
-'''bash 
+```bash 
 git clone https://github.com/RishOnBash/bash-scripts.git
 cd bash-scripts
 chmod +x setup.sh
 ./setup.sh --install-all
-'''
+```
 
 ### Options include:
 
-'''bash
+```bash
 -I, --install-all   Install all scripts"
 -P, --passgen       Install passgen (needs openssl)"
 -T, --todo          Install todo (needs bat)"
 -V, --vx265         Install vx265 (needs ffmpeg)"
-'''
+```
 
-> Note: Ensure '$PATH' is set to '$PREFIX/bin'.
+> Note: Ensure `$PATH` is set to `$PREFIX/bin`.
 
 ## 📦 Dependencies
 The scripts rely on the following packages:
 
-'ffmpeg' (Required for vx265)
-'openssl' (Required for passgen)
-'bat' (Required for todo)
+`ffmpeg` :Required for vx265)
+`openssl` :Required for passgen)
+`bat` :Required for todo)
 
 Install them via your package manager:
 
-'''bash
+```bash
 pkg install ffmpeg openssl bat
-'''
+```
 
 ## 🗑 Uninstallation
 
-'''bash
+```bash
 cd bash-scripts
 chmod +x uninstall.sh
 ./uninstall.sh --remove-all
-'''
+```
 ### Options include:
 
-'''bash
+```bash
 -R, --remove-all    Remove all scripts"
 -P, --passgen       Remove passgen"
 -T, --todo          Remove todo"
 -V, --vx265         Remove vx265"
-'''
+```
 
 ## ⚖️ License
 Distributed under the MIT License. See LICENSE for more information.
