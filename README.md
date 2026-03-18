@@ -21,7 +21,7 @@ cd bash-scripts
 2. **Run the installer:**
 
 ```bash
-chmod +x setup.sh
+chmod +x install.sh
 ./install.sh [Option]
 ```
 
