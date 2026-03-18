@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+#
+# ---------------------------------------------------------
+# passgen v1.0 | OpenSSL-Powered Password Generator
+# ---------------------------------------------------------
+# Author:      Rish
+# Date:        March 18, 2026
+# License:     MIT
+# ---------------------------------------------------------
+#
+# Global vars
+ACCOUNT=$@
+LENGTH=1024
+
+usage() {
+    echo "Usage: passgen [account]"
+    echo "Eg: passgen Reddit"
+}
+
+(($# == 0)) && { usage; exit 1; }
+read -p "Enter length of password: " pass_length; echo
+for i in {1..5}; do
+	echo "Option: $i"
+    openssl rand -base64 $LENGTH | tr -cd '[:alnum:]' | cut -c1-$pass_length
+done; echo
+read -p "Paste your selected choice here and press enter: " pass_select
+echo ""
+if [[ -n $pass_select ]]; then
+    echo -e "The password is saved in \e[1;92m$HOME/.saved-password\e[0m"
+    echo ""
+    echo "Password saved for $ACCOUNT on: $(date)" >> $HOME/.saved-password
+    echo $pass_select >> $HOME/.saved-password
+    echo " " >> $HOME/.saved-password
+elif [[ -z $pass_select ]]; then
+    printf "\e[1;91mNo password provided exiting!\e[0m\n"
+    exit 1
+fi

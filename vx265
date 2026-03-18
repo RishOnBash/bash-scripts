@@ -1,0 +1,84 @@
+#!/usr/bin/env bash
+#
+# ---------------------------------------------------------
+# vx265 v1.0 | Batch video encoder for X265/HEVC conversion
+# ---------------------------------------------------------
+# Author:      Rish
+# Date:        March 18, 2026
+# License:     MIT
+# ---------------------------------------------------------
+#
+# Colors
+YELLOW='\e[1;33m'
+RED='\e[1;31m'
+WHITE='\e[1;37m'
+RESET='\e[0m'
+
+usage() {
+    echo -e "Usage: vx265 [path/to/video directory] [Options]"
+    echo -e "Options:"
+    echo -e "  --mkv          Converts all .mkv files"
+    echo -e "  --mp4          Converts all .mp4 files"
+    echo -e "  --m4v          Converts all .m4v files"
+    echo -e "  -h, --help     Display this help message"
+}
+
+# Check if at least two arguments are provided
+(($# < 2)) && { usage; exit 1; }
+
+chk_dpdc() {
+    if ! command -v ffmpeg > /dev/null 2>&1; then 
+        echo -e "${RED}> Please install ffmpeg first${RESET}"
+        echo "> Run: pkg install ffmpeg"; exit 1
+    fi
+}
+
+mkv() {
+    echo -e "${WHITE}Converting MKVs into x265 codec...${RESET}"
+    for file in "$VID_DIR"/*.mkv; do
+        [[ -e "$file" ]] || { echo "No MKV files found."; return; }
+        ffmpeg -i "$file" -c:v libx265 "${file%.*}_new.mkv"
+        sleep 5
+    done
+    echo -e "\n${YELLOW}Encoding completed successfully!${RESET}"
+}
+
+mp4() {
+    echo -e "${WHITE}Converting MP4s into x265 codec...${RESET}"
+    for file in "$VID_DIR"/*.mp4; do
+        [[ -e "$file" ]] || { echo "No MP4 files found."; return; }
+        ffmpeg -i "$file" -c:v libx265 "${file%.*}_new.mp4"
+        sleep 5
+    done
+    echo -e "\n${YELLOW}Encoding completed successfully!${RESET}"
+}
+
+m4v() { 
+    echo -e "${WHITE}Converting M4Vs into x265 codec...${RESET}"
+    for file in "$VID_DIR"/*.m4v; do
+        [[ -e "$file" ]] || { echo "No M4V files found."; return; }
+        ffmpeg -i "$file" -c:v libx265 "${file%.*}_new.mp4"
+        sleep 5
+    done
+    echo -e "\n${YELLOW}Encoding completed successfully!${RESET}"
+}
+
+chk_dpdc 
+
+VID_DIR="$1"
+EXTENSION="$2"
+
+if [[ ! -d "$VID_DIR" ]]; then
+    echo -e "${RED}Error:${RESET} Directory '$VID_DIR' not found."
+    exit 1  # Stop the script if directory is missing
+fi
+
+case $EXTENSION in
+    --mkv ) mkv ;; 
+    --mp4 ) mp4 ;;
+    --m4v ) m4v ;; 
+    --help | -h ) usage ;;
+    *) echo -e "${RED}Invalid option:${RESET} '${YELLOW}$EXTENSION${RESET}'"
+       echo -e "Try 'vx265 --help' for more information."
+       exit 1 ;;
+esac

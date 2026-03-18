@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+#
+# ---------------------------------------------------------
+# todo v1.0 | Minimalist CLI Task Manager
+# ---------------------------------------------------------
+# Author:      Rish
+# Date:        March 18, 2026
+# License:     MIT
+# ---------------------------------------------------------
+#
+if ! command -v bat > /dev/null 2>&1; then
+    echo "> cat with wings not found :("
+    echo "> Run: pkg install bat"; exit 1
+fi
+
+TODO=$HOME/.todo
+printf "\n=========  To-Do menu  =========\n\
+    \t1. Add tasks\n\t2. Remove tasks\n\t3. View tasks\n\t4. Quit\n"
+echo ''
+read -p "Enter choice [1-4]: " choice
+echo ''
+while [ -z ${choice} ]; do
+	read -p "Enter a choice to continue: " choice; echo
+done
+
+addtasks() {
+	read -p "Enter your task: " entask; echo
+	echo "Task for $(date +"%d/%m/%Y %H:%M") > ${entask}" >> $TODO 
+	echo "Task added."; echo
+}
+
+removetasks() {
+	bat $TODO
+	read -p "Select line number to delete: " lnum
+	if [[ ${lnum} =~ ^[0-9]+$ ]] && [[ ${lnum} -gt 0 ]]; then
+		sed -i "${lnum} d" "$TODO"
+		echo "Task from line no. ${lnum} deleted successfully!"
+	else
+		echo "Invalid line number!"
+	fi
+}
+
+viewtasks() {
+	[[ -s "$TODO" ]] && bat $TODO || echo "No task added!"; echo ""
+}
+
+case ${choice} in
+	1) addtasks ;;
+	2) removetasks ;;
+	3) viewtasks ;;
+	4) echo 'Goodbye!'; echo; exit 0 ;;
+	*) echo 'Invalid option!'; echo ; exit 1 ;;
+esac
