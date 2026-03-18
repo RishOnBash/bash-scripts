@@ -9,7 +9,7 @@ A collection of minimalist CLI utilities for Termux.
 * [[todo](todo)]: Lightweight todo manager for the command line.
 
 ## 🚀 Installation
-Clone the repository and run the setup script to deploy the tools to your 'bin' directory.
+Clone the repository and run the setup script to deploy the tools to your `bin` directory.
 
 ```bash 
 git clone https://github.com/RishOnBash/bash-scripts.git
@@ -21,10 +21,10 @@ chmod +x setup.sh
 ### Options include:
 
 ```bash
--I, --install-all   Install all scripts"
--P, --passgen       Install passgen (needs openssl)"
--T, --todo          Install todo (needs bat)"
--V, --vx265         Install vx265 (needs ffmpeg)"
+-I, --install-all   Install all scripts
+-P, --passgen       Install passgen (needs openssl)
+-T, --todo          Install todo (needs bat)
+-V, --vx265         Install vx265 (needs ffmpeg)
 ```
 
 > Note: Ensure `$PATH` is set to `$PREFIX/bin`.
@@ -52,10 +52,10 @@ chmod +x uninstall.sh
 ### Options include:
 
 ```bash
--R, --remove-all    Remove all scripts"
--P, --passgen       Remove passgen"
--T, --todo          Remove todo"
--V, --vx265         Remove vx265"
+-R, --remove-all    Remove all scripts
+-P, --passgen       Remove passgen
+-T, --todo          Remove todo
+-V, --vx265         Remove vx265
 ```
 
 ## ⚖️ License
