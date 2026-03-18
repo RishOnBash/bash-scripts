@@ -42,7 +42,7 @@ case $1 in
         do_remove "todo" ;;
     --vx265 | -V )
         do_remove "vx265" ;;
-    --remove-all | -I ) 
+    --remove-all | -R ) 
         do_remove "passgen"
         do_remove "todo"
         do_remove "vx265" ;;
