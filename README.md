@@ -11,14 +11,14 @@ A collection of minimalist CLI utilities for Termux.
 ## 🚀 Installation
  Before cloning the repo, ensure you are in `$HOME` directory.
 
-1. ** Clone the repository:**
+1. **Clone the repository:**
 
 ```bash 
 git clone https://github.com/RishOnBash/bash-scripts.git
 cd bash-scripts
 ```
 
-2. ** Run the installer:**
+2. **Run the installer:**
 
 ```bash
 chmod +x setup.sh
