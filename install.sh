@@ -9,8 +9,9 @@
 # ---------------------------------------------------------
 #
 # Global vars
-DEST="$PREFIX/bin"
+DEST="$HOME/bin"
 SOURCE="$HOME/bash-scripts"
+WHITE='\e[1;97m'
 RED='\e[1;31m'
 GREEN='\e[1;92m'
 RESET='\e[0m'
@@ -24,6 +25,19 @@ usage() {
 }
 
 (($# == 0)) && { usage; exit 1; }
+
+chk_user_bin() {
+    if [[ ! -d $HOME/bin ]]; then
+        echo -e "${WHITE}[INFO]${RESET}: Creating user's bin directory ..."
+        mkdir -p $HOME/bin
+        echo 'export PATH="$PATH:$HOME/bin"' >> $HOME/.bashrc
+        source $HOME/.bashrc    # better restart terminal
+    else
+        echo -e "${GREEN}[OK]${RED}: ~/bin directory exists."
+    fi
+}
+
+chk_user_bin
 
 do_copy() {
     local script=$1
