@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 #
 # ---------------------------------------------------------
-# setup v1.0 | Script Installer Utility
+# Script Installer Utility
 # ---------------------------------------------------------
 # Author:      Rish
-# Date:		   March 18, 2026
+# Date:		   March 20, 2026
 # License:     MIT
 # ---------------------------------------------------------
 #
@@ -41,7 +41,7 @@ chk_user_bin
 
 do_copy() {
     local script=$1
-    echo "Installing $script to $DEST..."
+    echo -e " Installing ${GREEN}$script${RESET} to ${WHITE}$DEST${RESET} ..."
     cp "$SOURCE/$script" "$DEST/" && chmod +x "$DEST/$script"
     echo "Done!"
 }
