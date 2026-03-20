@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # ---------------------------------------------------------
-# passgen v1.0 | OpenSSL-Powered Password Generator
+# OpenSSL-Powered Password Generator
 # ---------------------------------------------------------
 # Author:      Rish
 # Date:        March 18, 2026
