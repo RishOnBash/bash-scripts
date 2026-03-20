@@ -12,6 +12,12 @@
 ACCOUNT=$@
 LENGTH=1024
 
+if ! command -v openssl >/dev/null 2>&1; then
+    echo "> openssl or/and openssl-tool not found!"
+    echo "> Run: pkg install openssh openssh-tool"
+    exit 1
+fi
+
 usage() {
     echo "Usage: passgen [account]"
     echo "Eg: passgen Reddit"
