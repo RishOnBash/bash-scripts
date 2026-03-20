@@ -33,7 +33,7 @@ chk_user_bin() {
         echo 'export PATH="$PATH:$HOME/bin"' >> $HOME/.bashrc
         source $HOME/.bashrc    # better restart terminal
     else
-        echo -e "${GREEN}[OK]${RED}: ~/bin directory exists."
+        echo -e "${GREEN}[OK]${RESET}: ~/bin directory exists."
     fi
 }
 
