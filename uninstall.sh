@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 #
 # ---------------------------------------------------------
-# setup v1.0 | Script Uninstaller Utility
+# Script Uninstaller Utility
 # ---------------------------------------------------------
 # Author:      Rish
-# Date:		   March 18, 2026
+# Date:		   March 20, 2026
 # License:     MIT
 # ---------------------------------------------------------
 #
 # Global vars
-DEST="$PREFIX/bin"
+DEST="$HOME/bin"
 RED='\e[1;31m'
 GREEN='\e[1;92m'
 RESET='\e[0m'
@@ -27,7 +27,7 @@ usage() {
 do_remove() {
     local script=$1
     if [[ -f "$DEST/$script" ]]; then
-        echo -e "Removing ${RED}$script${RESET} from $DEST..."
+        echo -e "Removing ${RED}$script${RESET} from $DEST ..."
         rm "$DEST/$script"
         echo "Done!"
     else
