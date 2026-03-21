@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+#
+# ---------------------------------------------------------
+# Lightweight tool for nucleotide sequence analysis 
+# ---------------------------------------------------------
+# Author:      Rish
+# Date:        March 21, 2026
+# License:     MIT
+# ---------------------------------------------------------
+#
+usage() {
+    echo "Usage: seqit [Sequence]"
+    echo "Example: seqit ATGC ATGC"
+    echo "PS: for multiline quote the sequence"
+}
+
+(($# == 0)) && { usage; exit 1; }
+
+if ! command -v bc >/dev/null 2>&1; then
+    echo "Depends: 'bc' for floating-point calculation"
+    echo "Run: pkg install bc"; exit 1
+fi
+
+RAW_INPUT="${*// /}"        # quotes the args. as one string
+INPUT="${RAW_INPUT^^}"      # convert all chars. to uppercase 
+
+COMP=$(tr 'ATGC' 'TACG' <<< "$INPUT")
+echo; echo "Complimentary sequence:"; echo "$COMP"; echo
+R_COMP=$(tr -d '\n' <<< "$COMP" | rev | fold -w 70)
+echo "Reverse complimentary:"; echo "$R_COMP"; echo
+
+count_char() {
+    local base_str=$(tr -dc "$1" <<< "$INPUT")
+    echo "${#base_str}"
+}
+
+ADEN=$(count_char "A"); echo "Adenine (A): $ADEN"
+GUAN=$(count_char "G"); echo "Guanine (G): $GUAN"
+CYTO=$(count_char "C"); echo "Cytosine(C): $CYTO"
+THYM=$(count_char "T"); echo "Thymine (T): $THYM"
+
+# calculation for GC and AT Content
+TOTAL=${#INPUT}
+if (( TOTAL > 0 )); then
+    GC_COUNT=$((GUAN+CYTO))
+    GC_PCT=$(bc -l <<< "scale=2; $GC_COUNT * 100 / $TOTAL" )
+    echo; echo "GC Content: $GC_PCT%"
+
+    AT_COUNT=$((ADEN+THYM))
+    AT_PCT=$(bc -l <<< "scale=2; $AT_COUNT * 100 / $TOTAL")
+    echo "AT Content: $AT_PCT%"
+fi
