@@ -21,6 +21,7 @@ usage() {
     echo "  -I, --install-all   Install all scripts"
     echo "  -P, --passgen       Install passgen (needs openssl)"
     echo "  -T, --todo          Install todo (needs bat)"
+    echo "  -S, --seqit         Install seqit (needs bc)"
     echo "  -V, --vx265         Install vx265 (needs ffmpeg)"
 }
 
@@ -50,6 +51,9 @@ case $1 in
     --passgen | -P ) 
         command -v openssl >/dev/null || { echo "Install openssl first"; exit 1; }
         do_copy "passgen" ;;
+    --seqit | -S )
+        command -v bc >/dev/null || { echo "Install bc first"; exit 1; }
+        do_copy "seqit" ;;
     --todo | -T )
     	command -v bat >/dev/null || { echo "Install bat first"; exit 1; }
         do_copy "todo" ;;
@@ -58,6 +62,7 @@ case $1 in
         do_copy "vx265" ;;
     --install-all | -I ) 
         do_copy "passgen"
+        do_copy "seqit"
         do_copy "todo"
         do_copy "vx265" ;;
     * ) usage; exit 1 ;;
