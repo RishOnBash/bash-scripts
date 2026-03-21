@@ -18,6 +18,7 @@ usage() {
     echo "Usage: ./uninstall.sh [Options]"
     echo "  -R, --remove-all    Remove all scripts"
     echo "  -P, --passgen       Remove passgen"
+    echo "  -S, --seqit         Remove seqit"
     echo "  -T, --todo          Remove todo"
     echo "  -V, --vx265         Remove vx265"
 }
@@ -38,7 +39,9 @@ do_remove() {
 case $1 in
     --passgen | -P ) 
         do_remove "passgen" ;;
-    --todo | -T ) 
+    --seqit | -S )
+        do_remove "seqit" ;;
+    --todo | -T )
         do_remove "todo" ;;
     --vx265 | -V )
         do_remove "vx265" ;;
