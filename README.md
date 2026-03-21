@@ -31,18 +31,18 @@ chmod +x install.sh
 ```bash
 -I, --install-all   Install all scripts
 -P, --passgen       Install passgen (needs openssl)
--T, --todo          Install todo (needs bat)
 -S, --seqit         Install seqit (needs bc)
+-T, --todo          Install todo (needs bat)
 -V, --vx265         Install vx265 (needs ffmpeg)
 ```
 
 ## 📦 Dependencies
 The scripts rely on the following packages:
 
-* `ffmpeg` :Required for vx265
-* `openssl` :Required for passgen
 * `bat` :Required for todo
 * `bc` : Required for seqit
+* `ffmpeg` :Required for vx265
+* `openssl` :Required for passgen
 
 Install them via your package manager:
 
