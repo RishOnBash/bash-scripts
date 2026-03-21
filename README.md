@@ -6,6 +6,7 @@ A collection of minimalist CLI utilities for Termux.
 
 * [[vx265](vx265)]: High-efficiency batch video encoder (x265/HEVC).
 * [[passgen](passgen)]: Secure password generator powered by OpenSSL.
+* [[seqit](seqit)]: Lightweight nucleotide sequence analysis tool.
 * [[todo](todo)]: Lightweight todo manager for the command line.
 
 ## 🚀 Installation
@@ -31,20 +32,22 @@ chmod +x install.sh
 -I, --install-all   Install all scripts
 -P, --passgen       Install passgen (needs openssl)
 -T, --todo          Install todo (needs bat)
+-S, --seqit         Install seqit (needs bc)
 -V, --vx265         Install vx265 (needs ffmpeg)
 ```
 
 ## 📦 Dependencies
 The scripts rely on the following packages:
 
-`ffmpeg` :Required for vx265)
-`openssl` :Required for passgen)
-`bat` :Required for todo)
+* `ffmpeg` :Required for vx265
+* `openssl` :Required for passgen
+* `bat` :Required for todo
+* `bc` : Required for seqit
 
 Install them via your package manager:
 
 ```bash
-pkg install ffmpeg openssl bat
+pkg install ffmpeg openssl bc bat
 ```
 
 ## 🗑 Uninstallation
@@ -59,6 +62,7 @@ chmod +x uninstall.sh
 ```bash
 -R, --remove-all    Remove all scripts
 -P, --passgen       Remove passgen
+-S, --seqit         Remove seqit
 -T, --todo          Remove todo
 -V, --vx265         Remove vx265
 ```
