@@ -8,10 +8,15 @@
 # License:     MIT
 # ---------------------------------------------------------
 #
+# Color definitions
+WHITE='\e[1;37m'
+NC='\e[0m'
+
 usage() {
-    echo "Usage: seqit [Sequence]"
-    echo "Example: seqit ATGC ATGC"
-    echo "PS: for multiline quote the sequence"
+    echo "Usage: seqit [fasta file] or [sequence]"
+    echo "Example: seqit myfile.fasta | myfile | myfile.txt"
+    echo "Note: Its's highly recommended that you give sequence as file
+      rather pasting the sequence directly cause it has to quoted"
 }
 
 (($# == 0)) && { usage; exit 1; }
@@ -21,13 +26,20 @@ if ! command -v bc >/dev/null 2>&1; then
     echo "Run: pkg install bc"; exit 1
 fi
 
-RAW_INPUT="${*// /}"        # quotes the args. as one string
-INPUT="${RAW_INPUT^^}"      # convert all chars. to uppercase 
+if [[ -f "$1" ]]; then
+    RAW_INPUT=$(grep -v "^>" "$1" | tr -d '[:space:]')
+    INPUT="${RAW_INPUT^^}"      # convert all chars. to uppercase
+else
+    RAW_INPUT="${*// /}"        # quotes the args. as one string
+    INPUT="${RAW_INPUT^^}"       
+fi
 
-COMP=$(tr 'ATGC' 'TACG' <<< "$INPUT")
-echo; echo "Complimentary sequence:"; echo "$COMP"; echo
-R_COMP=$(tr -d '\n' <<< "$COMP" | rev | fold -w 70)
-echo "Reverse complimentary:"; echo "$R_COMP"; echo
+COMP=$(tr 'ATGC' 'TACG' <<< "$INPUT" | fold -w 60)
+echo; echo -e "${WHITE}Complimentary sequence:${NC}"
+echo "$COMP"; echo
+R_COMP=$(tr -d '\n' <<< "$COMP" | rev | fold -w 60)
+echo -e "${WHITE}Reverse complimentary:${NC}" 
+echo "$R_COMP"; echo
 
 count_char() {
     local base_str=$(tr -dc "$1" <<< "$INPUT")
@@ -44,9 +56,9 @@ TOTAL=${#INPUT}
 if (( TOTAL > 0 )); then
     GC_COUNT=$((GUAN+CYTO))
     GC_PCT=$(bc -l <<< "scale=2; $GC_COUNT * 100 / $TOTAL" )
-    echo; echo "GC Content: $GC_PCT%"
+    echo; echo -e "${WHITE}GC Content${NC}: $GC_PCT%"
 
     AT_COUNT=$((ADEN+THYM))
     AT_PCT=$(bc -l <<< "scale=2; $AT_COUNT * 100 / $TOTAL")
-    echo "AT Content: $AT_PCT%"
+    echo -e "${WHITE}AT Content${NC}: $AT_PCT%"
 fi
