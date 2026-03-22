@@ -1,6 +1,6 @@
 # bash-scripts
 
-A collection of minimalist CLI utilities for Termux.
+A collection of minimalist CLI utilities for GNU/Linux.
 
 ## 🛠️ Included Tools
 
