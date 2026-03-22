@@ -40,14 +40,15 @@ chmod +x install.sh
 The scripts rely on the following packages:
 
 * `bat` :Required for todo
-* `bc` : Required for seqit
+* `bc` :Required for seqit
+* `tee` :Required for seqit
 * `ffmpeg` :Required for vx265
 * `openssl` :Required for passgen
 
 Install them via your package manager:
 
 ```bash
-pkg install ffmpeg openssl bc bat
+pkg install ffmpeg openssl bc bat tee
 ```
 
 ## 🗑 Uninstallation
