@@ -1,64 +1,78 @@
 #!/usr/bin/env bash
 #
 # ---------------------------------------------------------
-# Lightweight tool for nucleotide sequence analysis 
+# seqit | Lightweight tool for nucleotide sequence analysis 
 # ---------------------------------------------------------
 # Author:      Rish
-# Date:        March 21, 2026
+# Date:        March 22, 2026
 # License:     MIT
 # ---------------------------------------------------------
 #
-# Color definitions
-WHITE='\e[1;37m'
-NC='\e[0m'
+#Color definitions
+GREEN='\e[1;92m'
+WHITE='\e[1;97m'
+RESET='\e[0m'
 
 usage() {
-    echo "Usage: seqit [fasta file] or [sequence]"
-    echo "Example: seqit myfile.fasta | myfile | myfile.txt"
-    echo "Note: Its's highly recommended that you give sequence as file
-      rather pasting the sequence directly cause it has to quoted"
+    echo "Usage: "$0" <file.fasta>"
 }
 
 (($# == 0)) && { usage; exit 1; }
 
-if ! command -v bc >/dev/null 2>&1; then
-    echo "Depends: 'bc' for floating-point calculation"
-    echo "Run: pkg install bc"; exit 1
-fi
+{ command -v bc && command -v tee; } >/dev/null || \
+    { echo 'Missing dependencies: bc or tee'; exit 1; }
 
-if [[ -f "$1" ]]; then
-    RAW_INPUT=$(grep -v "^>" "$1" | tr -d '[:space:]')
-    INPUT="${RAW_INPUT^^}"      # convert all chars. to uppercase
+FILE="$1"
+
+if [[ -f "$FILE" ]]; then
+    RAW_INPUT=$(grep -v "^>" "$FILE" | tr -d '[:space:]')
+    INPUT="${RAW_INPUT^^}"   # convert all chars. to uppercase
 else
-    RAW_INPUT="${*// /}"        # quotes the args. as one string
-    INPUT="${RAW_INPUT^^}"       
+    echo "Error: File '$FILE' not found."
+    usage; exit 1
 fi
 
-COMP=$(tr 'ATGC' 'TACG' <<< "$INPUT" | fold -w 60)
-echo; echo -e "${WHITE}Complimentary sequence:${NC}"
-echo "$COMP"; echo
-R_COMP=$(tr -d '\n' <<< "$COMP" | rev | fold -w 60)
-echo -e "${WHITE}Reverse complimentary:${NC}" 
-echo "$R_COMP"; echo
+{
+    echo "------ REPORT FOR: '$FILE' ------"
+    echo; echo '>> Type: DNA'   # will include for RNA later
+    COMP=$(tr 'ATGC' 'TACG' <<< "$INPUT" | fold -w 60)
+    echo; echo -e ">> Complimentary"
+    echo "$COMP"; echo
+    R_COMP=$(tr -d '\n' <<< "$COMP" | rev | fold -w 60)
+    echo -e ">> Reverse Complimentary" 
+    echo "$R_COMP"; echo
+} | tee -a ${FILE%.*}_seqit.fasta
 
 count_char() {
     local base_str=$(tr -dc "$1" <<< "$INPUT")
     echo "${#base_str}"
 }
 
-ADEN=$(count_char "A"); echo "Adenine (A): $ADEN"
-GUAN=$(count_char "G"); echo "Guanine (G): $GUAN"
-CYTO=$(count_char "C"); echo "Cytosine(C): $CYTO"
-THYM=$(count_char "T"); echo "Thymine (T): $THYM"
+ADEN=$(count_char "A") 
+GUAN=$(count_char "G")
+CYTO=$(count_char "C")
+THYM=$(count_char "T")
+
+{   echo "Adenine (A): $ADEN"
+    echo "Guanine (G): $GUAN"
+    echo "Cytosine(C): $CYTO"
+    echo "Thymine (T): $THYM"
+} | tee -a ${FILE%.*}_seqit.fasta
 
 # calculation for GC and AT Content
 TOTAL=${#INPUT}
 if (( TOTAL > 0 )); then
-    GC_COUNT=$((GUAN+CYTO))
+    GC_COUNT=$(( GUAN + CYTO ))
     GC_PCT=$(bc -l <<< "scale=2; $GC_COUNT * 100 / $TOTAL" )
-    echo; echo -e "${WHITE}GC Content${NC}: $GC_PCT%"
+    {
+        echo; echo -e "GC Content: $GC_PCT%"
+    } | tee -a ${FILE%.*}_seqit.fasta
 
-    AT_COUNT=$((ADEN+THYM))
+    AT_COUNT=$(( ADEN + THYM ))
     AT_PCT=$(bc -l <<< "scale=2; $AT_COUNT * 100 / $TOTAL")
-    echo -e "${WHITE}AT Content${NC}: $AT_PCT%"
+    {
+        echo -e "AT Content: $AT_PCT%"
+    } | tee -a ${FILE%.*}_seqit.fasta
 fi
+
+echo -e "\n[ ${GREEN}DONE${RESET} ] Analysis saved to: ${WHITE}${1%.*}_seqit.fasta${RESET}"
