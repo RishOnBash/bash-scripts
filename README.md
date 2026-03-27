@@ -31,7 +31,7 @@ chmod +x install.sh
 ```bash
 -I, --install-all   Install all scripts
 -P, --passgen       Install passgen (needs openssl)
--S, --seqit         Install seqit (needs bc)
+-S, --seqit         Install seqit (needs bc and tee)
 -T, --todo          Install todo (needs bat)
 -V, --vx265         Install vx265 (needs ffmpeg)
 ```
