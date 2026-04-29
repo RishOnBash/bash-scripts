@@ -10,6 +10,7 @@
 #
 # Colors
 YELLOW='\e[1;33m'
+GREEN='\e[1;32m'
 RED='\e[1;31m'
 WHITE='\e[1;37m'
 RESET='\e[0m'
@@ -37,30 +38,33 @@ mkv() {
     echo -e "${WHITE}Converting MKVs into x265 codec...${RESET}"
     for file in "$VID_DIR"/*.mkv; do
         [[ -e "$file" ]] || { echo "No MKV files found."; return; }
-        ffmpeg -i "$file" -c:v libx265 "${file%.*}_new.mkv"
+        echo -e "${YELLOW} Processing '$file'...${RESET}"
+        ffmpeg -hide_banner -loglevel error -i "$file" -c:v libx265 "${file%.*}_new.mkv"
         sleep 5
     done
-    echo -e "\n${YELLOW}Encoding completed successfully!${RESET}"
+    echo -e "\n${GREEN}Encoding completed successfully!${RESET}"
 }
 
 mp4() {
     echo -e "${WHITE}Converting MP4s into x265 codec...${RESET}"
     for file in "$VID_DIR"/*.mp4; do
         [[ -e "$file" ]] || { echo "No MP4 files found."; return; }
-        ffmpeg -i "$file" -c:v libx265 "${file%.*}_new.mp4"
+        echo -e "${YELLOW} Processing '$file'...${RESET}"
+        ffmpeg -hide_banner -loglevel error -i "$file" -c:v libx265 "${file%.*}_new.mp4"
         sleep 5
     done
-    echo -e "\n${YELLOW}Encoding completed successfully!${RESET}"
+    echo -e "\n${GREEN}Encoding completed successfully!${RESET}"
 }
 
 m4v() { 
     echo -e "${WHITE}Converting M4Vs into x265 codec...${RESET}"
     for file in "$VID_DIR"/*.m4v; do
         [[ -e "$file" ]] || { echo "No M4V files found."; return; }
-        ffmpeg -i "$file" -c:v libx265 "${file%.*}_new.mp4"
+        echo -e "${YELLOW} Processing '$file'...${RESET}"
+        ffmpeg -hide_banner -loglevel error -i "$file" -c:v libx265 "${file%.*}_new.mp4"
         sleep 5
     done
-    echo -e "\n${YELLOW}Encoding completed successfully!${RESET}"
+    echo -e "\n${GREEN}Encoding completed successfully!${RESET}"
 }
 
 chk_dpdc 
