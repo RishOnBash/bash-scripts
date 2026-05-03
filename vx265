@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 #
 # ---------------------------------------------------------
-# vx265 v1.0 | Batch video encoder for X265/HEVC conversion
+# Batch video encoder for X265/HEVC conversion
 # ---------------------------------------------------------
 # Author:      Rish
-# Date:        March 18, 2026
+# Date:        May 3, 2026
 # License:     MIT
 # ---------------------------------------------------------
 #
@@ -34,35 +34,14 @@ chk_dpdc() {
     fi
 }
 
-mkv() {
-    echo -e "${WHITE}Converting MKVs into x265 codec...${RESET}"
-    for file in "$VID_DIR"/*.mkv; do
-        [[ -e "$file" ]] || { echo "No MKV files found."; return; }
+main() {
+    local format="$1"
+    echo -e "${WHITE}Converting '${format^^}s' into x265 codec...${RESET}"
+    for file in "$VID_DIR"/*.${format}; do
+        [[ -e "$file" ]] || { echo "No '${format^^}' files found."; return; }
         echo -e "${YELLOW} Processing '$file'...${RESET}"
-        ffmpeg -hide_banner -loglevel error -i "$file" -c:v libx265 "${file%.*}_new.mkv"
-        sleep 5
-    done
-    echo -e "\n${GREEN}Encoding completed successfully!${RESET}"
-}
-
-mp4() {
-    echo -e "${WHITE}Converting MP4s into x265 codec...${RESET}"
-    for file in "$VID_DIR"/*.mp4; do
-        [[ -e "$file" ]] || { echo "No MP4 files found."; return; }
-        echo -e "${YELLOW} Processing '$file'...${RESET}"
-        ffmpeg -hide_banner -loglevel error -i "$file" -c:v libx265 "${file%.*}_new.mp4"
-        sleep 5
-    done
-    echo -e "\n${GREEN}Encoding completed successfully!${RESET}"
-}
-
-m4v() { 
-    echo -e "${WHITE}Converting M4Vs into x265 codec...${RESET}"
-    for file in "$VID_DIR"/*.m4v; do
-        [[ -e "$file" ]] || { echo "No M4V files found."; return; }
-        echo -e "${YELLOW} Processing '$file'...${RESET}"
-        ffmpeg -hide_banner -loglevel error -i "$file" -c:v libx265 "${file%.*}_new.mp4"
-        sleep 5
+        ffmpeg -hide_banner -loglevel error -i "$file" -c:v libx265 "${file%.*}_new.${format}"
+        sleep 3
     done
     echo -e "\n${GREEN}Encoding completed successfully!${RESET}"
 }
@@ -74,13 +53,13 @@ EXTENSION="$2"
 
 if [[ ! -d "$VID_DIR" ]]; then
     echo -e "${RED}Error:${RESET} Directory '$VID_DIR' not found."
-    exit 1  # Stop the script if directory is missing
+    exit 1
 fi
 
 case $EXTENSION in
-    --mkv ) mkv ;; 
-    --mp4 ) mp4 ;;
-    --m4v ) m4v ;; 
+    --mkv ) main "mkv" ;; 
+    --mp4 ) main "mp4" ;;
+    --m4v ) main "m4v" ;; 
     --help | -h ) usage ;;
     *) echo -e "${RED}Invalid option:${RESET} '${YELLOW}$EXTENSION${RESET}'"
        echo -e "Try 'vx265 --help' for more information."
