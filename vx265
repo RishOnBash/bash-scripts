@@ -4,16 +4,17 @@
 # Batch video encoder for X265/HEVC conversion
 # ---------------------------------------------------------
 # Author:      Rish
-# Date:        May 3, 2026
+# Date:        May 7, 2026
 # License:     MIT
 # ---------------------------------------------------------
 #
 # Colors
-YELLOW='\e[1;33m'
-GREEN='\e[1;32m'
-RED='\e[1;31m'
-WHITE='\e[1;37m'
-RESET='\e[0m'
+YW='\e[1;33m'   # yellow
+GN='\e[1;32m'   # green
+RD='\e[1;31m'   # red
+GY='\e[1;30m'   # gray
+WE='\e[1;37m'   # white
+NC='\e[0m'      # normal
 
 usage() {
     echo -e "Usage: vx265 [path/to/video directory] [Options]"
@@ -28,22 +29,31 @@ usage() {
 (($# < 2)) && { usage; exit 1; }
 
 chk_dpdc() {
-    if ! command -v ffmpeg > /dev/null 2>&1; then 
-        echo -e "${RED}> Please install ffmpeg first${RESET}"
+    if ! command -v ffmpeg &> /dev/null; then 
+        echo -e "${RD}> Install ffmpeg first${NC}"
         echo "> Run: pkg install ffmpeg"; exit 1
     fi
 }
 
 main() {
     local format="$1"
-    echo -e "${WHITE}Converting '${format^^}s' into x265 codec...${RESET}"
+    echo -e "${WE}Converting '${format^^}s' into x265 codec...\n${NC}"
+
+    local init_secs="${SECONDS}"
     for file in "$VID_DIR"/*.${format}; do
         [[ -e "$file" ]] || { echo "No '${format^^}' files found."; return; }
-        echo -e "${YELLOW} Processing '$file'...${RESET}"
-        ffmpeg -hide_banner -loglevel error -i "$file" -c:v libx265 "${file%.*}_new.${format}"
+        echo -e "${GY} Processing '$file'...${NC}"
+        ffmpeg -hide_banner -loglevel error -i "$file" -c:a copy -c:v libx265 "${file%.*}_new.${format}"
         sleep 3
     done
-    echo -e "\n${GREEN}Encoding completed successfully!${RESET}"
+
+    local comp_secs=$((SECONDS - init_secs))
+    if ((comp_secs <= 120)); then
+        echo -e "\n${GN}Completed, time elapsed:${NC} ${WE}$comp_secs seconds${NC}"
+    else
+        local comp_mins=$((comp_secs / 60))
+        echo -e "\n${GN}Completed, time elapsed:${NC} ${WE}$comp_mins minutes${NC}"
+    fi
 }
 
 chk_dpdc 
@@ -52,7 +62,7 @@ VID_DIR="$1"
 EXTENSION="$2"
 
 if [[ ! -d "$VID_DIR" ]]; then
-    echo -e "${RED}Error:${RESET} Directory '$VID_DIR' not found."
+    echo -e "${RD}E:${NC} Directory '$VID_DIR' not found."
     exit 1
 fi
 
@@ -61,7 +71,7 @@ case $EXTENSION in
     --mp4 ) main "mp4" ;;
     --m4v ) main "m4v" ;; 
     --help | -h ) usage ;;
-    *) echo -e "${RED}Invalid option:${RESET} '${YELLOW}$EXTENSION${RESET}'"
+    *) echo -e "${RD}Invalid option:${NC} '${YW}$EXTENSION${NC}'"
        echo -e "Try 'vx265 --help' for more information."
        exit 1 ;;
 esac
