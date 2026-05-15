@@ -44,16 +44,10 @@ main() {
         [[ -e "$file" ]] || { echo "No '${format^^}' files found."; return; }
         echo -e "${GY} Processing '$file'...${NC}"
         ffmpeg -hide_banner -loglevel error -i "$file" -c:a copy -c:v libx265 "${file%.*}_new.${format}"
-        sleep 3
+        sleep 5
     done
 
-    local comp_secs=$((SECONDS - init_secs))
-    if ((comp_secs <= 120)); then
-        echo -e "\n${GN}Completed, time elapsed:${NC} ${WE}$comp_secs seconds${NC}"
-    else
-        local comp_mins=$((comp_secs / 60))
-        echo -e "\n${GN}Completed, time elapsed:${NC} ${WE}$comp_mins minutes${NC}"
-    fi
+    printf "\n${GN}Completed, time elapsed: ${NC}%02dh %02dm %02ds\n" $((SECONDS/3600)) $(((SECONDS/60)%60)) $((SECONDS%60))
 }
 
 chk_dpdc 
