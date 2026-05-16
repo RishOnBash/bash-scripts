@@ -39,7 +39,6 @@ main() {
     local format="$1"
     echo -e "${WE}Converting '${format^^}s' into x265 codec...\n${NC}"
 
-    local init_secs="${SECONDS}"
     for file in "$VID_DIR"/*.${format}; do
         [[ -e "$file" ]] || { echo "No '${format^^}' files found."; return; }
         echo -e "${GY} Processing '$file'...${NC}"
@@ -64,6 +63,7 @@ case $EXTENSION in
     --mkv ) main "mkv" ;; 
     --mp4 ) main "mp4" ;;
     --m4v ) main "m4v" ;; 
+    --ts ) main "ts" ;;
     --help | -h ) usage ;;
     *) echo -e "${RD}Invalid option:${NC} '${YW}$EXTENSION${NC}'"
        echo -e "Try 'vx265 --help' for more information."
