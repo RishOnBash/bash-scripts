@@ -5,7 +5,7 @@ A collection of minimalist CLI utilities for GNU/Linux.
 ## 🛠️ Included Tools
 
 * [[vx265](vx265)]: High-efficiency batch video encoder (x265/HEVC).
-* [[passgen](passgen)]: Secure password generator powered by OpenSSL.
+* [[passgen](passgen)]: Secure password generator using /dev/urandom.
 * [[seqit](seqit)]: Lightweight nucleotide sequence analysis tool.
 * [[todo](todo)]: Lightweight todo manager for the command line.
 
