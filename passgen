@@ -1,43 +1,42 @@
 #!/usr/bin/env bash
 #
-# ---------------------------------------------------------
-# OpenSSL-Powered Password Generator
-# ---------------------------------------------------------
-# Author:      Rish
-# Date:        March 18, 2026
-# License:     MIT
-# ---------------------------------------------------------
+# 
+# Simple Password Generator using /dev/urandom
+# 
+# Author: Rish
+# Date: June 13, 2026
+# License: MIT
+# 
 #
 # Global vars
-ACCOUNT=$@
-LENGTH=1024
-
-if ! command -v openssl >/dev/null 2>&1; then
-    echo "> openssl or/and openssl-tool not found!"
-    echo "> Run: pkg install openssh openssh-tool"
-    exit 1
-fi
+ACCOUNT=$1
+COUNT=$2
+GR='\e[1;92m'   # Green
+RD='\e[1;91m'   # Red
+NC='\e[0m'      # Reset (no color)
 
 usage() {
-    echo "Usage: passgen [account]"
-    echo "Eg: passgen Reddit"
+    echo "Usage: passgen [account] [password options]"
+    echo "Eg: passgen Reddit 13"
 }
 
 (($# == 0)) && { usage; exit 1; }
 read -p "Enter length of password: " pass_length; echo
-for i in {1..5}; do
-	echo "Option: $i"
-    openssl rand -base64 $LENGTH | tr -cd '[:alnum:]' | cut -c1-$pass_length
+    
+for ((i=0; i<${COUNT:-5}; i++)); do
+    RAND=$(tr -cd 'a-z0-9A-Z' </dev/urandom | head -c $pass_length)
+    printf "Option %02d > $RAND\n" $i
 done; echo
 read -p "Paste your selected choice here and press enter: " pass_select
 echo ""
+
 if [[ -n $pass_select ]]; then
-    echo -e "The password is saved in \e[1;92m$HOME/.saved-password\e[0m"
+    echo -e "The password is saved in ${GR}${HOME##*/}/.saved-password${NC}"
     echo ""
     echo "Password saved for $ACCOUNT on: $(date)" >> $HOME/.saved-password
     echo $pass_select >> $HOME/.saved-password
     echo " " >> $HOME/.saved-password
 elif [[ -z $pass_select ]]; then
-    printf "\e[1;91mNo password provided exiting!\e[0m\n"
+    printf "${RD}No password provided exiting!${NC}"
     exit 1
 fi
