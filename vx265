@@ -4,7 +4,7 @@
 # Batch video encoder for X265/HEVC conversion
 # 
 # Author: Rish
-# Date: June 9, 2026
+# Date: July 12, 2026
 # License: MIT
 # 
 #
@@ -37,7 +37,7 @@ chk_dpdc() {
 
 main() {
     local format="$1"
-    echo -e "${WE}Converting '${format^^}s' into x265 codec...\n${NC}"
+    echo -e "${WE}Converting into x265 codec ...\n${NC}"
 
     for file in *.${format}; do
         [[ -e "$file" ]] || { echo "No '${format^^}' files found."; return; }
