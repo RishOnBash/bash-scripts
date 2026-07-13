@@ -5,7 +5,7 @@ A collection of minimalist CLI utilities for GNU/Linux.
 ## 🛠️ Included Tools
 
 * [[vx265](vx265)]: High-efficiency batch video encoder (x265/HEVC).
-* [[passgen](passgen)]: Secure password generator powered by OpenSSL.
+* [[passgen](passgen)]: Secure password generator using /dev/urandom.
 * [[seqit](seqit)]: Lightweight nucleotide sequence analysis tool.
 * [[todo](todo)]: Lightweight todo manager for the command line.
 
@@ -30,7 +30,7 @@ chmod +x install.sh
 
 ```bash
 -I, --install-all   Install all scripts
--P, --passgen       Install passgen (needs openssl)
+-P, --passgen       Install passgen
 -S, --seqit         Install seqit (needs bc and tee)
 -T, --todo          Install todo (needs bat)
 -V, --vx265         Install vx265 (needs ffmpeg)
@@ -43,12 +43,11 @@ The scripts rely on the following packages:
 * `bc` :Required for seqit
 * `tee` :Required for seqit
 * `ffmpeg` :Required for vx265
-* `openssl` :Required for passgen
 
 Install them via your package manager:
 
 ```bash
-pkg install ffmpeg openssl bc bat tee
+pkg install ffmpeg bc bat tee
 ```
 
 ## 🗑 Uninstallation
